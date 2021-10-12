@@ -46,7 +46,7 @@ class _HomePageState extends State<HomePage> {
                 style: TextStyle(fontSize: 28.0),
               ),
               const Text(
-                'Weather',
+                'Weather1',
                 style: TextStyle(fontSize: 28.0, color: Colors.purple),
               ),
             ],
