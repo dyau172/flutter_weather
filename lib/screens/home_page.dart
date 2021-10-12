@@ -1,8 +1,14 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_weather1/model/weather_model.dart';
 import 'package:flutter_weather1/screens/additional_information.dart';
 import 'package:flutter_weather1/screens/current_weather.dart';
 import 'package:flutter_weather1/services/weather_api_client.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -14,15 +20,32 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   WeatherApiClient client = WeatherApiClient();
   Weather? data;
+  Position? _currentPosition;
+
+  String currentAddress = "My Address";
+  Position? currentPosition;
+
+  _getCurrentLocation() {
+    Geolocator.getCurrentPosition(
+            desiredAccuracy: LocationAccuracy.best,
+            forceAndroidLocationManager: true)
+        .then((Position position) {
+      setState(() {
+        _currentPosition = position;
+      });
+    }).catchError((e) {
+      print(e);
+    });
+  }
 
   @override
   void initState() {
     super.initState();
-    client.getCurrentWeather("London");
+    client.getCurrentWeather("Peterborough");
   }
 
   Future<void> getData() async {
-    data = await client.getCurrentWeather("London");
+    data = await client.getCurrentWeather("Peterborough");
   }
 
   @override
@@ -37,7 +60,7 @@ class _HomePageState extends State<HomePage> {
                 onPressed: () {},
                 color: Colors.white,
               ),
-              SizedBox(
+              const SizedBox(
                 width: 60.0,
               ),
               const Text(
@@ -71,12 +94,21 @@ class _HomePageState extends State<HomePage> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      textStyle: const TextStyle(fontSize: 20),
+                    ),
+                    onPressed: () {
+                      //determinePosition();
+                    },
+                    child: const Text('Enabled'),
+                  ),
                   const Divider(),
                   const SizedBox(
                     height: 20.0,
                   ),
                   additionalInformation("${data!.wind}", "${data!.pressure}",
-                      "${data!.humidity}", "${data!.feels_like}")
+                      "${data!.humidity}", "${data!.feels_like}"),
                 ],
               );
             }
