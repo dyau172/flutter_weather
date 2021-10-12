@@ -1,4 +1,4 @@
-# flutter_weather1
+# flutter_weather
 
 A new Flutter project.
 
