@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_weather1/model/weather_model.dart';
 import 'package:flutter_weather1/screens/additional_information.dart';
+import 'package:flutter_weather1/screens/current_weather.dart';
 import 'package:flutter_weather1/services/weather_api_client.dart';
-
-import 'current_weather.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
