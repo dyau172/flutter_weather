@@ -1,12 +1,11 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_weather1/model/weather_model.dart';
 import 'package:flutter_weather1/screens/additional_information.dart';
 import 'package:flutter_weather1/screens/current_weather.dart';
 import 'package:flutter_weather1/services/weather_api_client.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -21,8 +20,9 @@ class _HomePageState extends State<HomePage> {
   WeatherApiClient client = WeatherApiClient();
   Weather? data;
   Position? _currentPosition;
+  String _town = "London";
 
-  String currentAddress = "My Address";
+  //String currentAddress = "My Address";
   Position? currentPosition;
 
   _getCurrentLocation() {
@@ -32,20 +32,40 @@ class _HomePageState extends State<HomePage> {
         .then((Position position) {
       setState(() {
         _currentPosition = position;
+        _getAddressFromLatLng();
       });
     }).catchError((e) {
       print(e);
     });
   }
 
+  _getAddressFromLatLng() async {
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+          _currentPosition!.latitude, _currentPosition!.longitude);
+
+      Placemark place = placemarks[0];
+
+      setState(() {
+        _town = place.locality!;
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    client.getCurrentWeather("Peterborough");
+    //_getCurrentLocation();
+    //_getAddressFromLatLng();
+    client.getCurrentWeather(_town);
   }
 
   Future<void> getData() async {
-    data = await client.getCurrentWeather("Peterborough");
+    print("Town : ${_town}");
+    _getCurrentLocation();
+    data = await client.getCurrentWeather(_town);
   }
 
   @override
@@ -93,15 +113,6 @@ class _HomePageState extends State<HomePage> {
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                     ),
-                  ),
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      textStyle: const TextStyle(fontSize: 20),
-                    ),
-                    onPressed: () {
-                      //determinePosition();
-                    },
-                    child: const Text('Enabled'),
                   ),
                   const Divider(),
                   const SizedBox(
