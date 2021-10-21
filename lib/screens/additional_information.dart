@@ -41,7 +41,7 @@ Widget additionalInformation(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '$wind',
+                  wind,
                   style: TextStyle(
                     fontWeight: FontWeight.w400,
                     fontSize: 18.0,
@@ -51,7 +51,7 @@ Widget additionalInformation(
                   height: 18.0,
                 ),
                 Text(
-                  '$pressure',
+                  pressure,
                   style: TextStyle(
                     fontWeight: FontWeight.w400,
                     fontSize: 18.0,
@@ -87,7 +87,7 @@ Widget additionalInformation(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '$humidity',
+                  humidity,
                   style: TextStyle(
                     fontWeight: FontWeight.w400,
                     fontSize: 18.0,
@@ -97,7 +97,7 @@ Widget additionalInformation(
                   height: 18.0,
                 ),
                 Text(
-                  '$feels_like',
+                  feels_like,
                   style: TextStyle(
                     fontWeight: FontWeight.w400,
                     fontSize: 18.0,
