@@ -1,11 +1,9 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_weather1/model/weather_model.dart';
 import 'package:flutter_weather1/screens/additional_information.dart';
 import 'package:flutter_weather1/screens/current_weather.dart';
 import 'package:flutter_weather1/services/weather_api_client.dart';
-
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -47,7 +45,13 @@ class _HomePageState extends State<HomePage> {
       Placemark place = placemarks[0];
 
       setState(() {
-        _town = place.locality!;
+        // _town = place.locality!;
+
+        if (place.locality != null) {
+          _town = place.locality.toString();
+        } else {
+          _town = place.administrativeArea.toString();
+        }
       });
     } catch (e) {
       print(e);
@@ -57,8 +61,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    //_getCurrentLocation();
-    //_getAddressFromLatLng();
     client.getCurrentWeather(_town);
   }
 
